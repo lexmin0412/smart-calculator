@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<script src="./index.js"></script>
+		<link rel="stylesheet" href="./index.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="page-title">房贷计算器</div>
+			<div class="form">
+				<div class="form-item-container">
+					<div class="form-item-label">贷款方式</div>
+					<div>
+						等额本金
+					</div>
+				</div>
+				<div class="form-item-container">
+					<div class="form-item-label">贷款本金</div>
+					<input
+						class="form-input"
+						id="sum-input"
+						type="text"
+						placeholder="请输入贷款本金"
+					/>
+					<div class="form-item-suffix">
+						元
+					</div>
+				</div>
+				<div class="form-item-container">
+					<div class="form-item-label">贷款期数</div>
+					<input
+						class="form-input"
+						id="month-input"
+						type="text"
+						placeholder="请输入贷款期数"
+					/>
+					<div class="form-item-suffix">
+						期
+					</div>
+				</div>
+				<div class="form-item-container">
+					<div class="form-item-label">贷款利率</div>
+					<input
+						class="form-input"
+						id="rate-input"
+						type="text"
+						placeholder="请输入贷款利率"
+					/>
+					<div class="form-item-suffix">
+						%
+					</div>
+				</div>
+				<button id="calculate-btn">计算</button>
+			</div>
+			<div class="result">
+				<div class="result-title">计算结果</div>
+				<div class="result-content">
+					<div class="result-item">
+						<div class="result-item-label">还款总额</div>
+						<div id="sum-total" class="result-item-value">0</div>
+						<div>元</div>
+					</div>
+					<div class="result-item">
+						<div class="result-item-label">总利息</div>
+						<div id="interest-total" class="result-item-value">0</div>
+						<div>元</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			const putInputValueInStorage = (elementSelector) => {
+				localStorage.setItem(
+					`input-value__${elementSelector}`,
+					document.querySelector(elementSelector).value
+				);
+			};
+
+			const getInputValueInStorage = (elementSelector) => {
+				return localStorage.getItem(`input-value__${elementSelector}`);
+			};
+
+			const presetInputValues = (selectors) => {
+				selectors.forEach((selector) => {
+					document.querySelector(selector).value =
+						getInputValueInStorage(selector);
+				});
+			};
+			const storeInputValues = (selectors) => {
+				selectors.forEach((selector) => {
+					putInputValueInStorage(selector);
+				});
+			};
+
+			const formInputSelectors = ["#sum-input", "#month-input", "#rate-input"];
+			presetInputValues(formInputSelectors);
+
+			const calculateBtn = document.querySelector("#calculate-btn");
+			calculateBtn.addEventListener("click", function () {
+				storeInputValues(formInputSelectors);
+				const sumInputValue = document.querySelector("#sum-input").value;
+				const monthInputValue = document.querySelector("#month-input").value;
+				const rateInputValue = document.querySelector("#rate-input").value;
+
+				console.log("sumInputValue", sumInputValue);
+				const result = calculateDebt(
+					Number(sumInputValue),
+					Number(monthInputValue),
+					Number(rateInputValue/100)
+				);
+				console.log("result", result);
+				document.querySelector("#sum-total").innerHTML = result.totalSum;
+				document.querySelector("#interest-total").innerHTML =
+					result.totalInterest;
+			});
+		</script>
+	</body>
+</html>
