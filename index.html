@@ -70,6 +70,9 @@
 						<div>元</div>
 					</div>
 				</div>
+				<div class="result-list">
+
+				</div>
 			</div>
 		</div>
 		<script>
@@ -113,9 +116,18 @@
 					Number(rateInputValue/100)
 				);
 				console.log("result", result);
-				document.querySelector("#sum-total").innerHTML = result.totalSum;
+				document.querySelector("#sum-total").innerHTML = result.totalSum.toFixed(2);
 				document.querySelector("#interest-total").innerHTML =
-					result.totalInterest;
+					result.totalInterest.toFixed(2);
+				let newHtml = `<div class='month-item'><div>本金</div>
+					<div>利息</div><div>还款总额</div><div>期数</div></div>`
+				result.debtPerMonth.forEach((item, index)=>{
+					const itemHtml = `<div class='month-item'><div>${item.principal.toFixed(2)}</div>
+					<div>${item.interest.toFixed(2)}</div><div>${item.totalPerMonth.toFixed(2)}</div><div>第${index+1}期</div></div>`
+					newHtml += itemHtml
+				})
+				console.log(`document.querySelector('.result-list')`, document.querySelector('.result-list'))
+				document.querySelector('.result-list').innerHTML = newHtml
 			});
 		</script>
 	</body>
